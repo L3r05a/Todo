@@ -1,14 +1,14 @@
-export function createTodo(title, projectID) {
+export function createTodo(taskData) {
     return {
-        title, 
+        title: taskData.title, 
         description: "",
-        dueDate: "",
+        dueDate: taskData.dueDate,
         priority: "",
         notes: "",
         priority: "",
         completed: false,
         id: self.crypto.randomUUID(),
-        projectOwner: projectID,
+        projectOwner: taskData.projectID,
         
     };
 }

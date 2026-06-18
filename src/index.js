@@ -4,6 +4,12 @@ import {CreateProject} from "./projects.js"
 import {renderProject} from "./dom.js"
 import {renderTodo} from "./dom.js";
 import {initListeners} from "./listeners.js";
+import { compareAsc, differenceInCalendarDays } from "date-fns";
+import { isToday } from "date-fns";
+import { isPast } from "date-fns";
+import { differenceInDays } from "date-fns";
+import { startOfDay } from "date-fns";
+import { getTime } from "date-fns";
 
 
 const taskList = document.getElementById("taskList");
@@ -15,6 +21,7 @@ export const projectsList = [];
 //Add project to array function
 function addToProjList (pro) {
 projectsList.push(pro);
+
 };
 
 //Initialise listeners
@@ -38,17 +45,33 @@ function updateProjectTasks (newTask)
 //clears rendered tasks
 //calls render on clicked projects' tasks
 export function displayProjectTasks (projectID) {
-
+        //Clears tasks div
         while(taskList.firstChild) {
         taskList.removeChild(taskList.firstChild);
     };
-
+    //Matches tasks project owner ID to existing projectsID
     projectsList.forEach((project) =>{
         if(projectID === project.id){
-
+            //Sorts tasks based on dates proximity using date-fns
+            project.tasks.sort((a,b) =>
+            compareAsc(
+                new Date(a.dueDate),
+                new Date(b.dueDate)
+            ))
+            
             project.tasks.forEach(task => {
-                renderTodo(task)
-                // console.log(task.title);
+//Checks due date today/calendar days count
+
+            const dueDate = new Date (task.dueDate);
+
+            const daysToGo = differenceInCalendarDays(
+                                    dueDate,
+                                    new Date(),
+                                    
+            );
+
+            renderTodo(task, daysToGo)
+                
             });
             
         };
@@ -64,11 +87,14 @@ export function newProjectMaker(title) {
 };
 
 //Calls New task from form
-export function taskMaker(title, projectID) {
-const newTask = createTodo(title, projectID);
-updateProjectTasks(newTask);
+export function taskMaker(taskData) 
+    {
 
-};
+        const newTask = createTodo(taskData);
+        updateProjectTasks(newTask);
+        
+
+    };
 
 
 

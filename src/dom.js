@@ -2,11 +2,13 @@ const projects = document.getElementById("projects");
 const projectsDiv = document.getElementById("projectsDiv");
 const todos = document.getElementById("todo");
 const addProjectButton= document.getElementById("addPro");
+const taskList = document.getElementById("taskList");
 
 
 import {taskForm} from "./forms.js";
-
 import {displayProjectTasks} from "./index.js";
+import { format } from "date-fns";
+import { countingDays } from "./utils.js";
 
 
 //Renders Project 
@@ -18,13 +20,15 @@ export function renderProject (project) {
         container.classList="projectDiv";
 
     const text = project.title;
+    const upped = text.toUpperCase();
         
 
     const projectItem = document.createElement("div");
-          projectItem.textContent= text;
+          projectItem.textContent = upped;
           projectItem.classList="projectItem";
 
     projectItem.addEventListener("click", () => {
+
         //project title displays project's tasks
         displayProjectTasks(project.id);
     });
@@ -61,16 +65,54 @@ export function renderProject (project) {
     
 };
 
-export function renderTodo (todo) {
+export function renderTodo (todo, days) {
 
-    const container = document.createElement("div");
+const taskContainer = document.createElement("div")
+taskContainer.classList = "taskCards";
+
+    const nameContainer = document.createElement("div");
+    nameContainer.classList = "taskTitle"
     
-    const text = todo.title;
+        const title = todo.title;
+        const upped = title.toUpperCase()
+
+        nameContainer.textContent= upped;
+
+    const dateContainer = document.createElement("div")
+//date-fns formatting function
+        const date = new Date (todo.dueDate); 
+        const formattedDate =
+            
+        format(date, 'PPP');
+
+        dateContainer.textContent= `Due: ${formattedDate}`;
+
+    const daysLeft = document.createElement("div");
+
+    const text = countingDays(days)
+
+    daysLeft.textContent = text;
+
+
     
-    container.textContent= text;
+    taskList.appendChild(taskContainer);
+    taskContainer.appendChild(nameContainer);
+    taskContainer.appendChild(dateContainer);
+    taskContainer.appendChild(daysLeft);
+ 
     
-    taskList.appendChild(container);
+
     
 };
 
+export function clearsDomProjects () {
+     while(projectsDiv.firstChild) { 
+                projectsDiv.removeChild(projectsDiv.firstChild); 
+            };
+        };
 
+export function clearsDomTasks () {
+     while(taskList.firstChild) { 
+                taskList.removeChild(taskList.firstChild); 
+            };
+        };

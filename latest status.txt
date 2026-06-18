@@ -1,4 +1,0 @@
-trying to develope a function to 
-remove two form existing at the same time.
-
-nodeTest is one step, need to finish that

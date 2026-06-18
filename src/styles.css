@@ -27,10 +27,24 @@ justify-content: center;
 #projects > div {
   margin-top: 1rem;
   
+  
+}
+
+.projectDiv {
+  margin-bottom: 1.5rem;;
 }
 
 #todo > div {
   margin-top: 1rem;
+}
+
+.taskTitle, .projectItem {
+  font-weight: bolder;
+  color: cyan;
+}
+
+#taskList > div {
+  margin-bottom: 1rem;
 }
 
 .projectItem {

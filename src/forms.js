@@ -1,4 +1,4 @@
-import {newProjectMaker} from "./index.js"
+import {displayProjectTasks, newProjectMaker} from "./index.js"
 
 import {taskMaker} from "./index.js"
 
@@ -11,12 +11,11 @@ const todo = document.getElementById("todo");
 
 
 export function projectForm () {
-
+    //check for existing dom forms
     let test = formTest();
     if (test > 0) {
         return;
     } 
-
 
     const proFormDiv = document.createElement("div");
     proFormDiv.classList = "form";
@@ -88,17 +87,28 @@ export function taskForm (projectID) {
         form.action = '';
         form.method = "post";
 
-    const label = document.createElement("label");
+    const titleLabel = document.createElement("label");
 
-        label.htmlFor = "task-title";
+        titleLabel.htmlFor = "task-title";
         
 
-    const input = document.createElement("input");
+    const nameInput = document.createElement("input");
 
-        input.type = "text";
-        input.id = "task-title";
-        input.placeholder="task name..."
-        input.required = true;
+        nameInput.type = "text";
+        nameInput.id = "task-title";
+        nameInput.placeholder="task name..."
+        nameInput.required = true;
+
+    const dateLabel = document.createElement("label");
+
+        dateLabel.htmlFor = "task-date";
+        
+
+    const dateInput = document.createElement("input");
+
+        dateInput.type = "date";
+        dateInput.id = "task-date";
+        dateInput.required = true;
 
     const submit = document.createElement("button");
 
@@ -118,15 +128,23 @@ export function taskForm (projectID) {
 
     function preventsubmit(event){
             event.preventDefault();
-            taskMaker(input.value, projectID);
-           
+            //object
+            taskMaker({
+                title: nameInput.value, 
+                dueDate: dateInput.value, 
+                projectID: projectID});
+            
+        
             taskFormDiv.remove();
+
+            displayProjectTasks(projectID);
             
         };
 
-    
-    form.appendChild(label);
-    form.appendChild(input)
+    form.appendChild(titleLabel);
+    form.appendChild(nameInput);
+    form.appendChild(dateLabel);
+    form.appendChild(dateInput);
     form.appendChild(submit);
     form.appendChild(cancelTaskButton);
     taskFormDiv.appendChild(form);
