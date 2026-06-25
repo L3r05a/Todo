@@ -28,20 +28,40 @@ projectsList.push(pro);
 initListeners();
 
 //adds tasks to matching projects array
-//calls render
+//calls task render
 function updateProjectTasks (newTask) 
 {
     projectsList.forEach((element) =>
         {
         if (newTask.projectOwner === element.id )
             {
+        //Pushed new task into its own Project tasks array
         element.tasks.push(newTask);
         renderTodo(newTask);
             ;}
+            
          });
  
 };
 
+//Task Edit
+ export function editTask(todo, updatedData) {
+//Find project and task 
+ const projectMatch = projectsList.find((element) => element.id === todo.projectOwner);
+ const taskMatch = projectMatch.tasks.find((element) => element.id === todo.id);
+
+ taskMatch.title = updatedData.title;
+ taskMatch.dueDate = updatedData.dueDate;
+ taskMatch.priority = updatedData.priority;
+ taskMatch.details = updatedData.details;
+
+
+ displayProjectTasks(todo.projectOwner)
+console.log(projectsList)
+
+
+
+ };
 //clears rendered tasks
 //calls render on clicked projects' tasks
 export function displayProjectTasks (projectID) {
@@ -51,6 +71,7 @@ export function displayProjectTasks (projectID) {
     };
     //Matches tasks project owner ID to existing projectsID
     projectsList.forEach((project) =>{
+
         if(projectID === project.id){
             //Sorts tasks based on dates proximity using date-fns
             project.tasks.sort((a,b) =>
@@ -63,10 +84,12 @@ export function displayProjectTasks (projectID) {
 //Checks due date today/calendar days count
 
             const dueDate = new Date (task.dueDate);
-
+            
+            //calendar days between due date and creation date
             const daysToGo = differenceInCalendarDays(
-                                    dueDate,
-                                    new Date(),
+                    
+                dueDate,
+                new Date(),
                                     
             );
 
@@ -92,6 +115,7 @@ export function taskMaker(taskData)
 
         const newTask = createTodo(taskData);
         updateProjectTasks(newTask);
+        // console.log(newTask)
         
 
     };

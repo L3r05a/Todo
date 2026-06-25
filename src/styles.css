@@ -6,6 +6,15 @@ body {
   color: white;
 }
 
+.visible {
+  visibility: visible;
+}
+
+.collapse {
+  visibility: collapse;
+}
+
+
 
  #banner {
   display: flex;
@@ -27,20 +36,38 @@ justify-content: center;
 #projects > div {
   margin-top: 1rem;
   
-  
 }
 
 .projectDiv {
   margin-bottom: 1.5rem;;
 }
 
+#taskForm {
+  display: flex;
+  place-items: center;
+ 
+}
+
 #todo > div {
   margin-top: 1rem;
 }
 
-.taskTitle, .projectItem {
-  font-weight: bolder;
+.taskTitle,
+.projectItem {
+  font-weight: bold;
   color: cyan;
+}
+
+.taskTitle,
+.priorityTaskTitle{
+  text-transform: uppercase;
+}
+.detailsTask {
+  border: 1px solid;
+}
+.priorityTaskTitle {
+  color: red;
+  font-weight: bolder;
 }
 
 #taskList > div {
@@ -50,6 +77,14 @@ justify-content: center;
 .projectItem {
   
   width:fit-content;
+}
+
+.dateContainer{
+  font-size: .9em;
+}
+
+.daysLeft {
+  font-size: .8em;
 }
 
 

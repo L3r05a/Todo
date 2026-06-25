@@ -4,13 +4,18 @@ import {taskMaker} from "./index.js"
 
 import {formTest} from "./utils.js"
 
+import {editTask} from "./index.js"
+
 
 const projects = document.getElementById("projects");
 
 const todo = document.getElementById("todo");
 
+const taskList = document.getElementById("taskList");
+
 
 export function projectForm () {
+
     //check for existing dom forms
     let test = formTest();
     if (test > 0) {
@@ -102,6 +107,7 @@ export function taskForm (projectID) {
     const dateLabel = document.createElement("label");
 
         dateLabel.htmlFor = "task-date";
+        dateLabel.textContent = "Due Date?"
         
 
     const dateInput = document.createElement("input");
@@ -110,6 +116,30 @@ export function taskForm (projectID) {
         dateInput.id = "task-date";
         dateInput.required = true;
 
+
+    const priorityLabel = document.createElement("label");
+
+        priorityLabel.htmlFor = "priority"
+        priorityLabel.textContent = "Priority?"
+
+    const priorityInput = document.createElement("input");
+
+        priorityInput.type = "checkbox";
+        priorityInput.id = "priority";
+
+    const detailsLabel = document.createElement("label");
+        detailsLabel.htmlFor = "details";
+        detailsLabel.textContent = "Enter details";
+
+    const detailsInput = document.createElement("textarea");
+        
+        detailsInput.id = ("details");
+        detailsInput.rows = 5;
+        detailsInput.cols = 33;
+        detailsInput.placeholder = "Add more information about this task..."
+        
+        
+ 
     const submit = document.createElement("button");
 
         submit.type = "submit";
@@ -131,22 +161,142 @@ export function taskForm (projectID) {
             //object
             taskMaker({
                 title: nameInput.value, 
-                dueDate: dateInput.value, 
+                dueDate: dateInput.value,
+                priority: priorityInput.checked,
+                details: detailsInput.value,
                 projectID: projectID});
             
         
             taskFormDiv.remove();
 
             displayProjectTasks(projectID);
+
             
         };
 
-    form.appendChild(titleLabel);
+    
     form.appendChild(nameInput);
+    form.appendChild(priorityInput);
+    form.appendChild(priorityLabel);
     form.appendChild(dateLabel);
     form.appendChild(dateInput);
+    form.appendChild(detailsLabel)
+    form.appendChild(detailsInput)
     form.appendChild(submit);
     form.appendChild(cancelTaskButton);
     taskFormDiv.appendChild(form);
     todo.appendChild(taskFormDiv);
 };
+
+//EDIT TASK FORM
+export function editTaskForm(todo) {
+
+const editTaskDiv = document.createElement("div");
+    editTaskDiv.classList = "editTaskForm";
+    
+    const form = document.createElement("form");
+
+        form.action = '';
+        form.method = "post";
+
+
+const label = document.createElement("label");
+
+        label.htmlFor = "task-title";
+        
+
+    const input = document.createElement("input");
+
+        input.type = "text";
+        input.id = "task-title",
+        input.value = todo.title,
+        input.required = true;
+
+const dateLabel = document.createElement("label");
+
+    dateLabel.htmlFor = `task-date-${todo.id}`;
+        
+const dateInput = document.createElement("input");
+
+        dateInput.type = "date";
+        dateInput.id = `task-date-${todo.id}`;
+        dateInput.value = todo.dueDate
+        dateInput.required = true;
+
+const priorityLabel = document.createElement("label");
+
+        priorityLabel.htmlFor = `priority-${todo.id}`;
+        priorityLabel.textContent = "Priority?"
+        
+const priorityInput = document.createElement("input");
+
+        priorityInput.type = "checkbox";
+        priorityInput.id = `priority-${todo.id}`;
+        priorityInput.checked = todo.priority;
+
+ const detailsLabel = document.createElement("label");
+        detailsLabel.htmlFor = `details-${todo.id}`;
+        
+
+const detailsInput = document.createElement("textarea");
+        
+        detailsInput.id = `details-${todo.id}`;
+        detailsInput.rows = 5;
+        detailsInput.cols = 33;
+        if (todo.details) {
+        detailsInput.value = todo.details;
+        };
+                
+
+    const submit = document.createElement("button");
+
+        submit.type = "submit";
+        submit.textContent="Enter";
+        submit.id=`edit-${todo.id}`;
+
+
+    const cancelTaskButton = document.createElement("button");
+
+    cancelTaskButton.type = "button";
+    cancelTaskButton.textContent = "cancel";
+
+    cancelTaskButton.addEventListener("click", () => {
+        editTaskDiv.remove();
+        displayProjectTasks(todo.projectOwner);
+    });
+
+form.appendChild(label);
+form.appendChild(input);
+form.appendChild(dateLabel);
+form.appendChild(dateInput);
+form.appendChild(priorityLabel);
+form.appendChild(priorityInput);
+
+    form.appendChild(detailsLabel);
+    form.appendChild(detailsInput);
+
+form.appendChild(submit);
+form.appendChild(cancelTaskButton)
+editTaskDiv.appendChild(form);
+taskList.appendChild(editTaskDiv);
+
+form.addEventListener("submit", preventsubmit);
+
+    function preventsubmit(event){
+            event.preventDefault();
+            const updatedTaskData =  
+            {
+                title: input.value,
+                dueDate: dateInput.value,
+                priority: priorityInput.checked,
+                details: detailsInput.value,
+                
+            };
+
+            editTask(todo, updatedTaskData);
+
+            
+        };
+        
+
+}
