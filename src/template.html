@@ -3,21 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To Do List</title>
+    <title>Task Manager</title>
 </head>
 <body>
-<h2><div id="banner">To Do List</div>
+
+<header>
+    
+    <h1 id="banner">Tasks Manager</h1>
+    <!-- temporary storage panel -->
     <div id="storageDiv">
-    <button id="save"> Save </button>
-    <button id="restore"> Load </button>
-    <button id="clear"> Clear </button>
+        <!-- <button id="save"> Save </button>
+        <button id="restore"> Load </button> -->
+        <button id="clear"> Clear Storage</button>
     </div>
-</h2>
+
+</header>
 
 <div id="container">
 
     <div id="projects">
-        <h2>Projects <button id="addPro"> + </button></h2> 
+
+        <h2>Add Projects <button id="addPro"> + </button></h2> 
         
         <div id="projectsDiv"></div>
         
@@ -25,10 +31,11 @@
 
 
     <div id="todo">
-    
-        <h2>Tasks</h2>
         
-    <div id="taskList"></div>
+        <h2 id="tasksBanner">Tasks</h2>
+            
+        <div id="taskList"></div>
+        
     </div>
 
 </div>

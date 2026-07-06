@@ -23,7 +23,7 @@ export function projectForm () {
     } 
 
     const proFormDiv = document.createElement("div");
-    proFormDiv.classList = "form";
+    proFormDiv.classList = "projectForm";
     
     const form = document.createElement("form");
 
@@ -42,6 +42,9 @@ export function projectForm () {
         input.placeholder="Project title...";
         input.required = true;
 
+    const proButtonGroup = document.createElement("div");
+    proButtonGroup.classList = ("proButtonGroup");
+
     const submit = document.createElement("button");
 
         submit.type = "submit";
@@ -52,7 +55,7 @@ export function projectForm () {
     const cancelPro = document.createElement("button");
 
     cancelPro.type = "button";
-    cancelPro.textContent = "cancel";
+    cancelPro.textContent = "Cancel";
     
 
     cancelPro.addEventListener("click", () => {
@@ -69,8 +72,9 @@ export function projectForm () {
 
     form.appendChild(label);
     form.appendChild(input)
-    form.appendChild(submit);
-    form.appendChild(cancelPro);
+    form.appendChild(proButtonGroup)
+    proButtonGroup.appendChild(submit);
+    proButtonGroup.appendChild(cancelPro);
     proFormDiv.appendChild(form);
     projects.appendChild(proFormDiv);
 };
@@ -84,7 +88,7 @@ export function taskForm (projectID) {
 
 
     const taskFormDiv = document.createElement("div");
-    taskFormDiv.id = "taskForm";
+    taskFormDiv.classList = "taskForm";
     
 
     const form = document.createElement("form");
@@ -116,16 +120,17 @@ export function taskForm (projectID) {
         dateInput.id = "task-date";
         dateInput.required = true;
 
-
-    const priorityLabel = document.createElement("label");
-
-        priorityLabel.htmlFor = "priority"
-        priorityLabel.textContent = "Priority?"
+    const priorityGroup = document.createElement("div");
+    priorityGroup.classList= "priorityGroup";
 
     const priorityInput = document.createElement("input");
-
         priorityInput.type = "checkbox";
         priorityInput.id = "priority";
+
+    const priorityLabel = document.createElement("label");
+        priorityLabel.htmlFor = "priority"
+        priorityLabel.textContent = "Priority?"
+        
 
     const detailsLabel = document.createElement("label");
         detailsLabel.htmlFor = "details";
@@ -136,10 +141,10 @@ export function taskForm (projectID) {
         detailsInput.id = ("details");
         detailsInput.rows = 5;
         detailsInput.cols = 33;
-        detailsInput.placeholder = "Add more information about this task..."
-        
-        
- 
+        detailsInput.placeholder = "..."
+     
+const buttonGroup = document.createElement('div');
+buttonGroup.classList = "buttonGroup";
     const submit = document.createElement("button");
 
         submit.type = "submit";
@@ -176,20 +181,24 @@ export function taskForm (projectID) {
 
     
     form.appendChild(nameInput);
-    form.appendChild(priorityInput);
-    form.appendChild(priorityLabel);
+    form.appendChild(priorityGroup)
+    priorityGroup.appendChild(priorityInput);
+    priorityGroup.appendChild(priorityLabel);
     form.appendChild(dateLabel);
     form.appendChild(dateInput);
     form.appendChild(detailsLabel)
     form.appendChild(detailsInput)
-    form.appendChild(submit);
-    form.appendChild(cancelTaskButton);
+    form.appendChild(buttonGroup);
+    buttonGroup.appendChild(submit);
+    buttonGroup.appendChild(cancelTaskButton);
     taskFormDiv.appendChild(form);
     todo.appendChild(taskFormDiv);
 };
 
 //EDIT TASK FORM
 export function editTaskForm(todo) {
+
+
 
 const editTaskDiv = document.createElement("div");
     editTaskDiv.classList = "editTaskForm";
@@ -203,7 +212,7 @@ const editTaskDiv = document.createElement("div");
 const label = document.createElement("label");
 
         label.htmlFor = "task-title";
-        
+        label.textContent = 'Title';
 
     const input = document.createElement("input");
 
@@ -213,34 +222,33 @@ const label = document.createElement("label");
         input.required = true;
 
 const dateLabel = document.createElement("label");
-
-    dateLabel.htmlFor = `task-date-${todo.id}`;
-        
+dateLabel.textContent = "Due Date?"
+            
 const dateInput = document.createElement("input");
 
         dateInput.type = "date";
-        dateInput.id = `task-date-${todo.id}`;
+        
         dateInput.value = todo.dueDate
         dateInput.required = true;
 
+const priorityEditGroup = document.createElement("div");
+    priorityEditGroup.classList= "priorityEditGroup";
+
 const priorityLabel = document.createElement("label");
 
-        priorityLabel.htmlFor = `priority-${todo.id}`;
         priorityLabel.textContent = "Priority?"
         
 const priorityInput = document.createElement("input");
 
         priorityInput.type = "checkbox";
-        priorityInput.id = `priority-${todo.id}`;
+        
         priorityInput.checked = todo.priority;
 
  const detailsLabel = document.createElement("label");
-        detailsLabel.htmlFor = `details-${todo.id}`;
-        
+ detailsLabel.textContent = "Details"     
 
 const detailsInput = document.createElement("textarea");
         
-        detailsInput.id = `details-${todo.id}`;
         detailsInput.rows = 5;
         detailsInput.cols = 33;
         if (todo.details) {
@@ -269,8 +277,9 @@ form.appendChild(label);
 form.appendChild(input);
 form.appendChild(dateLabel);
 form.appendChild(dateInput);
-form.appendChild(priorityLabel);
-form.appendChild(priorityInput);
+form.appendChild(priorityEditGroup)
+priorityEditGroup.appendChild(priorityLabel);
+priorityEditGroup.appendChild(priorityInput);
 
     form.appendChild(detailsLabel);
     form.appendChild(detailsInput);

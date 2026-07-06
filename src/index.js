@@ -2,20 +2,20 @@ import "./styles.css";
 import {createTodo} from "./todo.js"
 import {CreateProject} from "./projects.js"
 import {renderProject} from "./dom.js"
+import { clearsDomProjects } from "./dom.js";
+import { clearsDomTasks } from "./dom.js";
 import {renderTodo} from "./dom.js";
 import {initListeners} from "./listeners.js";
 import { compareAsc, differenceInCalendarDays } from "date-fns";
-import { isToday } from "date-fns";
-import { isPast } from "date-fns";
-import { differenceInDays } from "date-fns";
-import { startOfDay } from "date-fns";
-import { getTime } from "date-fns";
-
+import { refreshProjects } from "./utils.js"
+import { loadStorage } from "./storage.js"
+import { saveStorage } from "./storage.js"
+import { taskBannerReset } from "./dom.js";
+import { recalculateProjectCompletion } from "./utils.js";
 
 const taskList = document.getElementById("taskList");
 
-
-//Projects array with related tasks
+//All Projects array with all related tasks
 export const projectsList = [];
 
 //Add project to array function
@@ -24,28 +24,62 @@ projectsList.push(pro);
 
 };
 
+//Delete Project
+export function deleteProjectItem(projectID) {
+    const projectToRemove = projectsList.findIndex((project) => project.id === projectID);
+
+    projectsList.splice(projectToRemove, 1);
+
+    saveStorage();
+    refreshProjects()
+    taskBannerReset();
+    clearsDomTasks();
+
+}
+
 //Initialise listeners
 initListeners();
+loadStorage()
 
 //adds tasks to matching projects array
 //calls task render
 function updateProjectTasks (newTask) 
 {
-    projectsList.forEach((element) =>
-        {
-        if (newTask.projectOwner === element.id )
-            {
-        //Pushed new task into its own Project tasks array
-        element.tasks.push(newTask);
-        renderTodo(newTask);
-            ;}
+    const projectToUpdate = projectsList.find((element) =>
+        
+        newTask.projectOwner === element.id) 
             
-         });
+        //Pushed new task into its own Project tasks array
+        projectToUpdate.tasks.push(newTask);
+        
  
 };
 
+//Complets Project if ALL its asks are completed
+
+export function updateTaskCompletion (todoID, completed){
+    
+    //finds Project's completion to update
+    const projectToUpdate = 
+    projectsList.find((project) => 
+    project.tasks.some((task) => task.id === todoID));
+
+    //finds task completion to update
+    const taskToUpdate = projectToUpdate.tasks.find((task) => task.id === todoID);
+    
+    //Updates todo array completed status from DOM
+    taskToUpdate.completed = completed;
+
+
+    recalculateProjectCompletion(projectToUpdate);
+
+    saveStorage();
+    refreshProjects();
+}
+
 //Task Edit
  export function editTask(todo, updatedData) {
+
 //Find project and task 
  const projectMatch = projectsList.find((element) => element.id === todo.projectOwner);
  const taskMatch = projectMatch.tasks.find((element) => element.id === todo.id);
@@ -55,13 +89,33 @@ function updateProjectTasks (newTask)
  taskMatch.priority = updatedData.priority;
  taskMatch.details = updatedData.details;
 
+saveStorage();
 
- displayProjectTasks(todo.projectOwner)
-console.log(projectsList)
-
+displayProjectTasks(todo.projectOwner);
 
 
  };
+
+ //delete task from projectsList
+export function deleteTask (todo) {
+
+//find matching project ID
+const projectMatch = projectsList.find((element) => element.id === todo.projectOwner);
+//index of matching task ID
+const taskMatch = projectMatch.tasks.findIndex((element) => element.id === todo.id);
+
+//Splice indexed task from project array
+projectMatch.tasks.splice(taskMatch, 1)
+
+//check if deleting the tasks affected project completion
+recalculateProjectCompletion(projectMatch);
+
+saveStorage();
+refreshProjects();
+displayProjectTasks(todo.projectOwner)
+
+}
+
 //clears rendered tasks
 //calls render on clicked projects' tasks
 export function displayProjectTasks (projectID) {
@@ -69,10 +123,13 @@ export function displayProjectTasks (projectID) {
         while(taskList.firstChild) {
         taskList.removeChild(taskList.firstChild);
     };
-    //Matches tasks project owner ID to existing projectsID
-    projectsList.forEach((project) =>{
 
-        if(projectID === project.id){
+    //Finds matching project
+    const project = projectsList.find((element) => element.id === projectID);
+
+    //guard against invalid/obsolete projectID
+    if (!project) return;
+
             //Sorts tasks based on dates proximity using date-fns
             project.tasks.sort((a,b) =>
             compareAsc(
@@ -81,32 +138,31 @@ export function displayProjectTasks (projectID) {
             ))
             
             project.tasks.forEach(task => {
-//Checks due date today/calendar days count
 
+//Checks due date today/calendar days count
             const dueDate = new Date (task.dueDate);
             
             //calendar days between due date and creation date
             const daysToGo = differenceInCalendarDays(
                     
                 dueDate,
-                new Date(),
-                                    
+                new Date(),                      
             );
-
+            
             renderTodo(task, daysToGo)
                 
-            });
-            
+            });      
         };
-    });
-}
+
 
 //Calls New Project using form
 export function newProjectMaker(title) {
 
     const newProject = new CreateProject(title);
-    addToProjList(newProject)
+    addToProjList(newProject);
+    saveStorage();
     renderProject(newProject);
+
 };
 
 //Calls New task from form
@@ -115,7 +171,8 @@ export function taskMaker(taskData)
 
         const newTask = createTodo(taskData);
         updateProjectTasks(newTask);
-        // console.log(newTask)
+        saveStorage();
+        renderTodo(newTask);
         
 
     };

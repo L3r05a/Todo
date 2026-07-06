@@ -1,91 +1,191 @@
+/* RESET/GLOBAL  */
 
 body {
   margin: 0;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  background-color: rebeccapurple;
-  color: white;
+  background-color: rgb(84, 77, 170);
+  color: rgb(235, 211, 233);
 }
 
-.visible {
-  visibility: visible;
-}
+/* TYPOGRAPHY */
 
-.collapse {
-  visibility: collapse;
-}
+/* LAYOUT */
 
-
-
- #banner {
+ #banner, #storageDiv {
   display: flex;
-  
-justify-content: center;
+  justify-content: center;
+  margin: 1rem;
  
  }
 
  #container {
-  display: grid;
-
-  grid-template-columns: 1fr 1fr ;
- 
-  grid-auto-rows: auto;
-  gap: 10px;
-  padding: 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr ;
+    grid-auto-rows: auto;
+    gap: 10px;
+    padding: 1rem;
  }
 
-#projects > div {
-  margin-top: 1rem;
+ #projects, #todo {
+  display: flex;
+  flex-direction: column;
+  
+  align-items: center;
+ }
+
+
+/* COMPONENTS */
+
+.projectDiv, 
+.projectCompleted
+{
+  margin-bottom: 1.5rem;
+}
+
+.projectCompleted {
+
+  filter:brightness(65%);
+}
+
+
+input {
+  
+  padding : .6em;
+  border-radius: 10px;
+  border: none;
+}
+
+input, textarea {
+  background-color: rgb(235, 211, 233);
+}
+
+.projectItem {
+  display: grid;
+}
+
+
+.projectItem, .taskTitle {
+  color: rgb(235, 211, 233);
+  font-weight: bold;
+}
+
+
+.projectDiv, 
+.projectCompleted,
+.taskCards,
+.taskCompleted
+{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: rgb(128, 98, 125)  solid 1px;
+  border-radius: 10px;
+  box-shadow: .5px .5px 5px;
+  width: 50%;
+  min-width: 250px;
+  max-width: 500px;
+  padding: .8rem
   
 }
 
-.projectDiv {
-  margin-bottom: 1.5rem;;
+.taskCards, .taskCompleted {
+  margin-bottom: 1rem;
 }
 
-#taskForm {
-  display: flex;
-  place-items: center;
- 
-}
-
-#todo > div {
-  margin-top: 1rem;
-}
-
-.taskTitle,
-.projectItem {
-  font-weight: bold;
-  color: cyan;
+.addButton,
+.taskCards button,
+.taskCompleted button {
+  font-family: monospace
 }
 
 .taskTitle,
 .priorityTaskTitle{
+  display: flex;
+  gap: 10px;
   text-transform: uppercase;
 }
+
+.taskTitle {
+  color: rgb(40, 192, 40);
+  margin-right: 2;
+}
+
+.daysLeft {
+  line-height: 2;
+  font-size: .8em;
+}
+
+.hovered {
+  width: fit-content;
+}
+
+.projectItem:hover,
+button:hover,
+.hovered:hover {
+  
+  color: rgb(35, 25, 145);
+  font-weight: bold;
+
+}
+
 .detailsTask {
   border: 1px solid;
-}
-.priorityTaskTitle {
-  color: red;
-  font-weight: bolder;
-}
-
-#taskList > div {
-  margin-bottom: 1rem;
+  margin: .5em 0;
+  padding: .3em;
+  line-height: 1.4;
 }
 
-.projectItem {
-  
-  width:fit-content;
+.detailsTask {
+  display: flex;
+  flex-direction: column;
+ 
+}
+.detailsClose {
+ margin: .5em 0;
+ padding: 1px 8px;
+background-color: rgb(143, 138, 175);
 }
 
 .dateContainer{
   font-size: .9em;
 }
 
-.daysLeft {
-  font-size: .8em;
+ button{
+  width: fit-content;
+  margin: .25rem ;
+  border-radius: 5px;
+  border: none;
+  padding: 1px 15px;
+  color: rgb(43, 46, 226);
+  background-color:  rgb(235, 211, 233);
+  
+}
+
+/* FORMS */
+
+.projectForm form,
+.taskForm form,
+.editTaskForm form
+ {
+  display: flex;
+  flex-direction: column;
+  gap: 0.50rem;
+}
+
+.priorityGroup, .buttonGroup{
+  display: flex;
 }
 
 
+/* UTILITIES */
+
+.taskCompleted {
+  filter:brightness(65%);
+}
+
+.priorityTaskTitle {
+  color: rgb(230, 62, 32);
+  font-weight: bolder;
+  
+}
 

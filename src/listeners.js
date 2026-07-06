@@ -25,16 +25,16 @@ addPro.addEventListener("click", () => {
 //init debugging storage
 testDiv.addEventListener("click", (event) => {
     
-    if (event.target.id === "save"){
-        saveStorage();
-    } else
+    // if (event.target.id === "save"){
+    //     saveStorage();
+    // } else
 
         if (event.target.id === "clear"){
         clearStorage();
-    } else    
+    // } else    
 
-        if (event.target.id === "restore"){
-        loadStorage();
+    //     if (event.target.id === "restore"){
+    //     loadStorage();
     };  
 
 })

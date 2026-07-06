@@ -26,6 +26,7 @@ export function loadStorage () {
         clearsDomTasks();
         return;
     };
+
     //existing storage default
     const parsedData= JSON.parse(savedData);
        
@@ -36,11 +37,11 @@ export function loadStorage () {
     parsedData.forEach((project) =>{
         projectsList.push(project);
     });
-    //clear DOM
+    //clears DOM
     clearsDomProjects();
     clearsDomTasks();
     
-
+    //renders each project
     projectsList.forEach((element) => {
         renderProject(element);
  
