@@ -1,7 +1,7 @@
-const projects = document.getElementById("projects");
+// const projects = document.getElementById("projects");
 const projectsDiv = document.getElementById("projectsDiv");
-const todos = document.getElementById("todo");
-const addProjectButton= document.getElementById("addPro");
+// const todos = document.getElementById("todo");
+// const addProjectButton= document.getElementById("addPro");
 const taskList = document.getElementById("taskList");
 const tasksBanner = document.getElementById("tasksBanner");
 
@@ -11,7 +11,6 @@ import { format } from "date-fns";
 import { countingDays } from "./utils.js";
 import { editTaskForm } from "./forms.js";
 import { deleteTask} from "./index.js";
-import { editProject } from "./index.js";
 import { formTest } from "./utils.js"
 import { updateTaskCompletion } from "./index.js";
 import { deleteProjectItem } from "./index.js"
@@ -24,13 +23,14 @@ export function renderProject (project) {
     //projects container
     const container = document.createElement("div");
         container.id = project.id;
+        //Assigns classlist using switch
         container.classList = project.completed
         ? "projectCompleted"
         : "projectDiv";
 
     const text = project.title;
     const upped = text.toUpperCase();
-    const addText = " (click to display)";
+    const addText = " (click to display tasks)";
     ;
         
     //project title

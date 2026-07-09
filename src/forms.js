@@ -1,26 +1,21 @@
-import {displayProjectTasks, newProjectMaker} from "./index.js"
-
-import {taskMaker} from "./index.js"
+import {
+    displayProjectTasks,
+    editTask,
+    newProjectMaker,
+    taskMaker} 
+from "./index.js"
 
 import {formTest} from "./utils.js"
 
-import {editTask} from "./index.js"
-
-
 const projects = document.getElementById("projects");
-
 const todo = document.getElementById("todo");
-
 const taskList = document.getElementById("taskList");
 
 
 export function projectForm () {
 
-    //check for existing dom forms
-    let test = formTest();
-    if (test > 0) {
-        return;
-    } 
+    //check for existing forms in the DOM
+    if (formTest() > 0) return;  
 
     const proFormDiv = document.createElement("div");
     proFormDiv.classList = "projectForm";
@@ -33,8 +28,8 @@ export function projectForm () {
     const label = document.createElement("label");
 
         label.htmlFor = "project-title";
+        label.textContent = "New Project"
         
-
     const input = document.createElement("input");
 
         input.type = "text";
@@ -62,13 +57,15 @@ export function projectForm () {
         proFormDiv.remove();
     })
 
-    function preventsubmit(event){
+    function handleSubmit(event){
             event.preventDefault();
-            newProjectMaker(input.value);
+            const title = input.value.trim();
+            if (!title)return;
+            newProjectMaker(title);
             proFormDiv.remove();
     };
 
-    form.addEventListener("submit", preventsubmit);
+    form.addEventListener("submit", handleSubmit);
 
     form.appendChild(label);
     form.appendChild(input)
@@ -81,10 +78,7 @@ export function projectForm () {
 
 export function taskForm (projectID) {
 
-    let test = formTest();
-    if (test > 0) {
-        return;
-    }  
+    if (formTest() > 0) return;  
 
 
     const taskFormDiv = document.createElement("div");
@@ -159,9 +153,9 @@ buttonGroup.classList = "buttonGroup";
         taskFormDiv.remove();
     })
 
-    form.addEventListener("submit", preventsubmit);
+    form.addEventListener("submit", handleSubmit);
 
-    function preventsubmit(event){
+    function handleSubmit(event){
             event.preventDefault();
             //object
             taskMaker({
@@ -169,7 +163,7 @@ buttonGroup.classList = "buttonGroup";
                 dueDate: dateInput.value,
                 priority: priorityInput.checked,
                 details: detailsInput.value,
-                projectID: projectID});
+                projectID});
             
         
             taskFormDiv.remove();
@@ -251,9 +245,10 @@ const detailsInput = document.createElement("textarea");
         
         detailsInput.rows = 5;
         detailsInput.cols = 33;
-        if (todo.details) {
-        detailsInput.value = todo.details;
-        };
+        //Populates text area on reload if todo.details has content
+        
+        detailsInput.value = todo.details ?? "";
+        
                 
 
     const submit = document.createElement("button");
@@ -289,9 +284,9 @@ form.appendChild(cancelTaskButton)
 editTaskDiv.appendChild(form);
 taskList.appendChild(editTaskDiv);
 
-form.addEventListener("submit", preventsubmit);
+form.addEventListener("submit", handleSubmit);
 
-    function preventsubmit(event){
+    function handleSubmit(event){
             event.preventDefault();
             const updatedTaskData =  
             {
