@@ -140,8 +140,5 @@ dist
 # Vite files
 vite.config.js.timestamp-*
 vite.config.ts.timestamp-*
-<<<<<<< HEAD
+
 .vite/
-=======
-.vite/
->>>>>>> 12424c0446c623c14ad53aff812be2e7541f99b0
